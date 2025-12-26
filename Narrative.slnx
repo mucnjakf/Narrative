@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/src/">
     <Project Path="src/Narrative.Api/Narrative.Api.csproj" />
+    <Project Path="src/Narrative.Content/Narrative.Content.csproj" />
   </Folder>
   <Folder Name="/tests/" />
 </Solution>
