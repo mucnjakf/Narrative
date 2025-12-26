@@ -9,32 +9,27 @@ internal static class Program
     internal static void Main(string[] args)
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-        builder.Services.ConfigureServices();
+        builder.ConfigureServices();
 
         WebApplication app = builder.Build();
         app.ConfigureMiddleware();
         app.Run();
     }
 
-    private static IServiceCollection ConfigureServices(this IServiceCollection services)
+    private static void ConfigureServices(this WebApplicationBuilder builder)
     {
-        services.AddOpenApi();
+        builder.Services.AddOpenApi();
 
-        services
+        builder.Services
             .AddFastEndpoints()
             .SwaggerDocument();
 
-        services.AddContentModule();
-
-        return services;
+        builder.Services.AddContentModule(builder.Configuration);
     }
 
     private static void ConfigureMiddleware(this WebApplication app)
     {
-        if (app.Environment.IsDevelopment())
-        {
-            app.MapOpenApi();
-        }
+        app.MapOpenApi();
 
         app
             .UseFastEndpoints(config => config.Endpoints.RoutePrefix = "api")
