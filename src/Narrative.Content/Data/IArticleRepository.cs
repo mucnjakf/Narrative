@@ -10,5 +10,7 @@ internal interface IArticleRepository
 
     Task CreateAsync(Article article);
 
+    Task Delete(Article article);
+
     Task SaveChangesAsync();
 }

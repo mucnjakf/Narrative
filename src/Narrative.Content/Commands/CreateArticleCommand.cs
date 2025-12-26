@@ -6,9 +6,9 @@ using Narrative.Content.Dtos;
 
 namespace Narrative.Content.Commands;
 
-internal record CreateArticleCommand(string Title, string Description, string Content) : ICommand<Result<ArticleDto>>;
+internal sealed record CreateArticleCommand(string Title, string Description, string Content) : ICommand<Result<ArticleDto>>;
 
-internal class CreateArticleCommandHandler(IArticleRepository articleRepository)
+internal sealed class CreateArticleCommandHandler(IArticleRepository articleRepository)
     : ICommandHandler<CreateArticleCommand, Result<ArticleDto>>
 {
     public async Task<Result<ArticleDto>> ExecuteAsync(CreateArticleCommand command, CancellationToken ct)

@@ -11,5 +11,12 @@ internal sealed class EfCoreArticleRepository(ContentDbContext dbContext) : IArt
 
     public async Task CreateAsync(Article article) => await dbContext.Articles.AddAsync(article);
 
+    public Task Delete(Article article)
+    {
+        dbContext.Articles.Remove(article);
+
+        return Task.CompletedTask;
+    }
+
     public async Task SaveChangesAsync() => await dbContext.SaveChangesAsync();
 }
