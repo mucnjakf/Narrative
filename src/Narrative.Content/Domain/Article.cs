@@ -33,4 +33,13 @@ internal sealed class Article
         Description = Guard.Against.NullOrEmpty(description);
         Content = Guard.Against.NullOrEmpty(content);
     }
+
+    internal void Update(string title, string description, string content)
+    {
+        Title = Guard.Against.NullOrEmpty(title);
+        Description = Guard.Against.NullOrEmpty(description);
+        Content = Guard.Against.NullOrEmpty(content);
+
+        UpdatedAtUtc = DateTimeOffset.UtcNow;
+    }
 }

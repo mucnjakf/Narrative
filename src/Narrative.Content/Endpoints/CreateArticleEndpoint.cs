@@ -6,9 +6,9 @@ using Void = FastEndpoints.Void;
 
 namespace Narrative.Content.Endpoints;
 
-internal record CreateArticleRequest(string Title, string Description, string Content);
+internal sealed record CreateArticleRequest(string Title, string Description, string Content);
 
-internal record CreateArticleResponse(ArticleDto Article);
+internal sealed record CreateArticleResponse(ArticleDto Article);
 
 internal sealed class CreateArticleEndpoint : Endpoint<CreateArticleRequest, CreateArticleResponse>
 {
