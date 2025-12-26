@@ -26,6 +26,8 @@ internal sealed class DeleteArticleCommandHandler(
         await articleRepository.Delete(article);
         await articleRepository.SaveChangesAsync();
 
+        logger.LogInformation("Article with ID {Id} successfully deleted.", article.Id);
+
         return Result.Success();
     }
 }

@@ -24,6 +24,8 @@ internal sealed class GetArticleCommandHandler(
             return Result.NotFound($"Article with ID {command.Id} not found.");
         }
 
+        logger.LogInformation("Article with ID {Id} successfully found.", article.Id);
+
         return Result.Success(
             new ArticleDto(
                 article.Id,
