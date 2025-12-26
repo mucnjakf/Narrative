@@ -23,7 +23,7 @@ internal sealed class GetArticleCommandHandler(
             logger.LogError("Article with ID {Id} not found.", command.Id);
             return Result.NotFound($"Article with ID {command.Id} not found.");
         }
-        
+
         return Result.Success(
             new ArticleDto(
                 article.Id,

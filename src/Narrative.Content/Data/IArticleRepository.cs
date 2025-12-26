@@ -4,6 +4,8 @@ namespace Narrative.Content.Data;
 
 internal interface IArticleRepository
 {
+    Task<List<Article>> GetAllAsync();
+
     Task<Article?> FindOrDefaultAsync(Guid id);
 
     Task CreateAsync(Article article);
