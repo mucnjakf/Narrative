@@ -30,6 +30,8 @@ internal static class Program
                     settings.Version = "v1";
                     settings.Description = "REST API for Narrative web application.";
                 };
+                options.ShortSchemaNames = true;
+                options.RemoveEmptyRequestSchema = true;
             });
 
         builder.Services.AddContentModule(builder.Configuration);
