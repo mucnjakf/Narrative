@@ -1,10 +1,16 @@
 ﻿@Url = https://localhost:7235/api
-@ArticleId = b80b58ea-7b8c-4968-bfd2-2f412fa1dbe3
+@ArticleId = 38f77de1-3248-4ddd-8b3e-0020f2e611a4
 
 ###
 
 // Get all articles
 GET {{Url}}/articles
+Accept: application/json
+
+###
+
+// Get article
+GET {{Url}}/articles/{{ArticleId}}
 Accept: application/json
 
 ###

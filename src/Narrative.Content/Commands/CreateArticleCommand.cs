@@ -19,14 +19,15 @@ internal sealed class CreateArticleCommandHandler(IArticleRepository articleRepo
         await articleRepository.CreateAsync(article);
         await articleRepository.SaveChangesAsync();
 
-        return Result.Success(new ArticleDto(
-            article.Id,
-            article.CreatedAtUtc,
-            article.UpdatedAtUtc,
-            article.Title,
-            article.Description,
-            article.Content,
-            article.PublishedAtUtc,
-            article.Status));
+        return Result.Success(
+            new ArticleDto(
+                article.Id,
+                article.CreatedAtUtc,
+                article.UpdatedAtUtc,
+                article.Title,
+                article.Description,
+                article.Content,
+                article.PublishedAtUtc,
+                article.Status));
     }
 }

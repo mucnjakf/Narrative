@@ -1,9 +1,10 @@
-﻿using Ardalis.Result;
-using FastEndpoints;
+﻿using FastEndpoints;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Narrative.Content.Commands;
 using Narrative.Content.Dtos;
-using Void = FastEndpoints.Void;
+using Narrative.Shared;
 
 namespace Narrative.Content.Endpoints;
 
@@ -11,7 +12,8 @@ internal sealed record GetArticleRequest(Guid Id);
 
 internal sealed record GetArticleResponse(ArticleDto Article);
 
-internal sealed class GetArticleEndpoint : Endpoint<GetArticleRequest, GetArticleResponse>
+internal sealed class GetArticleEndpoint
+    : Endpoint<GetArticleRequest, Results<Ok<GetArticleResponse>, ProblemHttpResult>>
 {
     public override void Configure()
     {
@@ -20,14 +22,14 @@ internal sealed class GetArticleEndpoint : Endpoint<GetArticleRequest, GetArticl
         Description(builder => builder.WithName("GetArticle"));
     }
 
-    public override async Task<Void> HandleAsync(GetArticleRequest request, CancellationToken ct)
+    public override async Task<Results<Ok<GetArticleResponse>, ProblemHttpResult>> ExecuteAsync(
+        GetArticleRequest request,
+        CancellationToken ct)
     {
         Result<ArticleDto> result = await new GetArticleCommand(request.Id).ExecuteAsync(ct);
 
-        return result.Status switch
-        {
-            ResultStatus.NotFound => await Send.NotFoundAsync(ct), // TODO: figure out how to return message
-            _ => await Send.OkAsync(new GetArticleResponse(result.Value), ct)
-        };
+        return result.IsSuccess
+            ? TypedResults.Ok(new GetArticleResponse(result.Value))
+            : result.ToProblemDetails();
     }
 }
