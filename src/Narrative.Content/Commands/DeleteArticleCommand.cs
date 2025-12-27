@@ -1,8 +1,8 @@
-﻿using Ardalis.Result;
-using FastEndpoints;
+﻿using FastEndpoints;
 using Microsoft.Extensions.Logging;
 using Narrative.Content.Data;
 using Narrative.Content.Domain;
+using Narrative.Shared;
 
 namespace Narrative.Content.Commands;
 
@@ -19,14 +19,14 @@ internal sealed class DeleteArticleCommandHandler(
 
         if (article is null)
         {
-            logger.LogError("Article with ID {Id} not found.", command.Id);
-            return Result.NotFound($"Article with ID {command.Id} not found.");
+            Error error = ArticleErrors.ArticleNotFound(command.Id);
+            logger.LogError("Code: {Code} - Description: {Description}", error.Code, error.Description);
+
+            return Result.Failure(error);
         }
 
         await articleRepository.Delete(article);
         await articleRepository.SaveChangesAsync();
-
-        logger.LogInformation("Article with ID {Id} successfully deleted.", article.Id);
 
         return Result.Success();
     }

@@ -1,13 +1,14 @@
-﻿using Ardalis.Result;
-using FastEndpoints;
+﻿using FastEndpoints;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Narrative.Content.Commands;
-using Void = FastEndpoints.Void;
+using Narrative.Shared;
 
 namespace Narrative.Content.Endpoints;
 
 internal sealed record DeleteArticleRequest(Guid Id);
 
-internal sealed class DeleteArticleEndpoint : Endpoint<DeleteArticleRequest>
+internal sealed class DeleteArticleEndpoint : Endpoint<DeleteArticleRequest, Results<NoContent, ProblemHttpResult>>
 {
     public override void Configure()
     {
@@ -15,14 +16,12 @@ internal sealed class DeleteArticleEndpoint : Endpoint<DeleteArticleRequest>
         AllowAnonymous();
     }
 
-    public override async Task<Void> HandleAsync(DeleteArticleRequest request, CancellationToken ct)
+    public override async Task<Results<NoContent, ProblemHttpResult>> ExecuteAsync(
+        DeleteArticleRequest request,
+        CancellationToken ct)
     {
         Result result = await new DeleteArticleCommand(request.Id).ExecuteAsync(ct);
 
-        return result.Status switch
-        {
-            ResultStatus.NotFound => await Send.NotFoundAsync(ct), // TODO: figure out hot to return message
-            _ => await Send.NoContentAsync(ct)
-        };
+        return result.IsSuccess ? TypedResults.NoContent() : result.ToProblemDetails();
     }
 }

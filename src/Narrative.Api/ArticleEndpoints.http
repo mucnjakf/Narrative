@@ -1,5 +1,5 @@
 ﻿@Url = https://localhost:7235/api
-@ArticleId = e0f02bf9-dfb5-47b7-9272-ec9940e0cec9
+@ArticleId = b80b58ea-7b8c-4968-bfd2-2f412fa1dbe3
 
 ###
 
@@ -19,6 +19,12 @@ Content-Type: application/json
     "description": "descirption123",
     "content": "content 21322131"
 }
+
+###
+
+// Delete article
+DELETE {{Url}}/articles/{{ArticleId}}
+Accept: application/json
 
 ###
 
