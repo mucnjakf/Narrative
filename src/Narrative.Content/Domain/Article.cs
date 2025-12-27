@@ -1,5 +1,5 @@
-﻿using Ardalis.GuardClauses;
-using Narrative.Content.Enums;
+﻿using Narrative.Content.Enums;
+using Narrative.Shared;
 
 namespace Narrative.Content.Domain;
 
@@ -23,23 +23,48 @@ internal sealed class Article
 
     internal Article(string title, string description, string content)
     {
+        // TODO: validate length maybe
+        Title = title;
+        Description = description;
+        Content = content;
+
         Id = Guid.NewGuid();
         CreatedAtUtc = DateTimeOffset.UtcNow;
         UpdatedAtUtc = DateTimeOffset.UtcNow;
         PublishedAtUtc = null;
         Status = ArticleStatus.Pending;
-
-        Title = Guard.Against.NullOrEmpty(title);
-        Description = Guard.Against.NullOrEmpty(description);
-        Content = Guard.Against.NullOrEmpty(content);
     }
 
     internal void Update(string title, string description, string content)
     {
-        Title = Guard.Against.NullOrEmpty(title);
-        Description = Guard.Against.NullOrEmpty(description);
-        Content = Guard.Against.NullOrEmpty(content);
+        // TODO: validate length maybe
+        Title = title;
+        Description = description;
+        Content = content;
 
         UpdatedAtUtc = DateTimeOffset.UtcNow;
+    }
+
+    internal Result Review(ArticleStatus decision)
+    {
+        if (decision is not (ArticleStatus.Approved or ArticleStatus.Rejected))
+        {
+            return Result.Failure(ArticleErrors.DecisionCannotBeUsedForReview(decision));
+        }
+
+        if (Status is not ArticleStatus.Pending)
+        {
+            return Result.Failure(ArticleErrors.ArticleWithStatusCannotBeReviewed(Id, Status));
+        }
+
+        Status = decision;
+        UpdatedAtUtc = DateTimeOffset.UtcNow;
+
+        if (decision is ArticleStatus.Approved)
+        {
+            PublishedAtUtc = DateTimeOffset.UtcNow;
+        }
+
+        return Result.Success();
     }
 }

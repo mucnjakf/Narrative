@@ -2,6 +2,7 @@
   <Folder Name="/src/">
     <Project Path="src/Narrative.Api/Narrative.Api.csproj" />
     <Project Path="src/Narrative.Content/Narrative.Content.csproj" />
+    <Project Path="src/Narrative.Shared/Narrative.Shared.csproj" />
   </Folder>
   <Folder Name="/tests/" />
 </Solution>

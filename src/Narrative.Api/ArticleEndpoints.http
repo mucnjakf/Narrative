@@ -1,0 +1,21 @@
+﻿@Url = https://localhost:7235/api/articles
+@ArticleId = e0f02bf9-dfb5-47b7-9272-ec9940e0cec9
+
+###
+
+// Get all articles
+GET {{Url}}
+Accept: application/json
+
+### 
+
+// Review article
+PATCH {{Url}}/{{ArticleId}}/review
+Accept: application/json
+Content-Type: application/json
+
+{
+    "decision": 1
+}
+
+###
