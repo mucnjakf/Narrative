@@ -37,6 +37,8 @@ internal sealed class GetArticleEndpoint
         GetArticleRequest request,
         CancellationToken ct)
     {
+        throw new Exception("exception occurred in get article endpoint");
+
         Result<ArticleDto> result = await new GetArticleCommand(request.Id).ExecuteAsync(ct);
 
         return result.IsSuccess

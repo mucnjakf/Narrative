@@ -42,6 +42,7 @@ internal static class Program
         app.MapOpenApi();
 
         app
+            .UseDefaultExceptionHandler()
             .UseFastEndpoints(config =>
             {
                 config.Endpoints.RoutePrefix = "api";
