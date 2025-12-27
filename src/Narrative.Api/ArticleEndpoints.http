@@ -1,16 +1,29 @@
-﻿@Url = https://localhost:7235/api/articles
+﻿@Url = https://localhost:7235/api
 @ArticleId = e0f02bf9-dfb5-47b7-9272-ec9940e0cec9
 
 ###
 
 // Get all articles
-GET {{Url}}
+GET {{Url}}/articles
 Accept: application/json
 
-### 
+###
+
+// Create article
+POST {{Url}}/articles
+Accept: application/json
+Content-Type: application/json
+
+{
+    "title": "test 123",
+    "description": "descirption123",
+    "content": "content 21322131"
+}
+
+###
 
 // Review article
-PATCH {{Url}}/{{ArticleId}}/review
+PATCH {{Url}}/articles/{{ArticleId}}/review
 Accept: application/json
 Content-Type: application/json
 

@@ -1,8 +1,9 @@
-﻿using Ardalis.Result;
-using FastEndpoints;
+﻿using FastEndpoints;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Narrative.Content.Commands;
 using Narrative.Content.Dtos;
-using Void = FastEndpoints.Void;
+using Narrative.Shared;
 
 namespace Narrative.Content.Endpoints;
 
@@ -10,7 +11,8 @@ internal sealed record CreateArticleRequest(string Title, string Description, st
 
 internal sealed record CreateArticleResponse(ArticleDto Article);
 
-internal sealed class CreateArticleEndpoint : Endpoint<CreateArticleRequest, CreateArticleResponse>
+internal sealed class CreateArticleEndpoint
+    : Endpoint<CreateArticleRequest, Results<CreatedAtRoute<CreateArticleResponse>, ProblemHttpResult>>
 {
     public override void Configure()
     {
@@ -18,14 +20,18 @@ internal sealed class CreateArticleEndpoint : Endpoint<CreateArticleRequest, Cre
         AllowAnonymous();
     }
 
-    public override async Task<Task<Void>> HandleAsync(CreateArticleRequest request, CancellationToken ct)
+    public override async Task<Results<CreatedAtRoute<CreateArticleResponse>, ProblemHttpResult>> ExecuteAsync(
+        CreateArticleRequest request,
+        CancellationToken ct)
     {
         Result<ArticleDto> result = await new CreateArticleCommand(request.Title, request.Description, request.Content)
             .ExecuteAsync(ct);
 
-        return Send.CreatedAtAsync<GetArticleEndpoint>(
-            new { result.Value.Id },
-            new CreateArticleResponse(result.Value),
-            cancellation: ct);
+        return result.IsSuccess
+            ? TypedResults.CreatedAtRoute(
+                new CreateArticleResponse(result.Value),
+                "GetArticle",
+                new { result.Value.Id })
+            : result.ToProblemDetails();
     }
 }

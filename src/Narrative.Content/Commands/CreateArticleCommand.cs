@@ -1,9 +1,8 @@
-﻿using Ardalis.Result;
-using FastEndpoints;
-using Microsoft.Extensions.Logging;
+﻿using FastEndpoints;
 using Narrative.Content.Data;
 using Narrative.Content.Domain;
 using Narrative.Content.Dtos;
+using Narrative.Shared;
 
 namespace Narrative.Content.Commands;
 
@@ -11,7 +10,6 @@ internal sealed record CreateArticleCommand(string Title, string Description, st
     : ICommand<Result<ArticleDto>>;
 
 internal sealed class CreateArticleCommandHandler(
-    ILogger<CreateArticleCommandHandler> logger,
     IArticleRepository articleRepository)
     : ICommandHandler<CreateArticleCommand, Result<ArticleDto>>
 {
@@ -22,17 +20,14 @@ internal sealed class CreateArticleCommandHandler(
         await articleRepository.CreateAsync(article);
         await articleRepository.SaveChangesAsync();
 
-        logger.LogInformation("Article with ID {Id} successfully created.", article.Id);
-
-        return Result.Success(
-            new ArticleDto(
-                article.Id,
-                article.CreatedAtUtc,
-                article.UpdatedAtUtc,
-                article.Title,
-                article.Description,
-                article.Content,
-                article.PublishedAtUtc,
-                article.Status));
+        return Result.Success(new ArticleDto(
+            article.Id,
+            article.CreatedAtUtc,
+            article.UpdatedAtUtc,
+            article.Title,
+            article.Description,
+            article.Content,
+            article.PublishedAtUtc,
+            article.Status));
     }
 }

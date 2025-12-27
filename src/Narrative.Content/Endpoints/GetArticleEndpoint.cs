@@ -1,5 +1,6 @@
 ﻿using Ardalis.Result;
 using FastEndpoints;
+using Microsoft.AspNetCore.Builder;
 using Narrative.Content.Commands;
 using Narrative.Content.Dtos;
 using Void = FastEndpoints.Void;
@@ -16,6 +17,7 @@ internal sealed class GetArticleEndpoint : Endpoint<GetArticleRequest, GetArticl
     {
         Get("articles/{id}");
         AllowAnonymous();
+        Description(builder => builder.WithName("GetArticle"));
     }
 
     public override async Task<Void> HandleAsync(GetArticleRequest request, CancellationToken ct)
