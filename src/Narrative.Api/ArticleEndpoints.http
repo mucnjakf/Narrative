@@ -1,5 +1,5 @@
 ﻿@Url = https://localhost:7235/api
-@ArticleId = 38f77de1-3248-4ddd-8b3e-0020f2e611a4
+@ArticleId = 38f77de1-3248-4ddd-8b3e-0020f2e611a1
 
 ###
 
@@ -24,6 +24,19 @@ Content-Type: application/json
     "title": "test 123",
     "description": "descirption123",
     "content": "content 21322131"
+}
+
+###
+
+// Update article
+PUT {{Url}}/articles/{{ArticleId}}
+Accept: application/json
+Content-Type: application/json
+
+{
+    "title": "test 123 up",
+    "description": "descirption123 up",
+    "content": "content 21322131 up"
 }
 
 ###

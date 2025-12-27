@@ -1,8 +1,8 @@
-﻿using Ardalis.Result;
-using FastEndpoints;
+﻿using FastEndpoints;
 using Microsoft.Extensions.Logging;
 using Narrative.Content.Data;
 using Narrative.Content.Domain;
+using Narrative.Shared;
 
 namespace Narrative.Content.Commands;
 
@@ -20,14 +20,14 @@ internal sealed class UpdateArticleCommandHandler(
 
         if (article is null)
         {
-            logger.LogError("Article with ID {Id} not found.", command.Id);
-            return Result.NotFound($"Article with ID {command.Id} not found.");
+            Error error = ArticleErrors.ArticleNotFound(command.Id);
+            logger.LogError("Code: {Code} - Description: {Description}", error.Code, error.Description);
+
+            return Result.Failure(error);
         }
 
         article.Update(command.Title, command.Description, command.Content);
         await articleRepository.SaveChangesAsync();
-
-        logger.LogInformation("Article with ID {Id} successfully updated.", article.Id);
 
         return Result.Success();
     }
