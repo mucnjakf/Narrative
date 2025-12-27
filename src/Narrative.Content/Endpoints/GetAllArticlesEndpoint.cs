@@ -1,4 +1,5 @@
 ﻿using FastEndpoints;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Narrative.Content.Commands;
@@ -16,6 +17,7 @@ internal sealed class GetAllArticlesEndpoint
     {
         Get("articles");
         AllowAnonymous();
+        Description(builder => builder.WithName("GetAllArticle"));
     }
 
     public override async Task<Results<Ok<GetAllArticlesResponse>, ProblemHttpResult>> ExecuteAsync(

@@ -1,4 +1,5 @@
 ﻿using FastEndpoints;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Narrative.Content.Commands;
@@ -14,6 +15,7 @@ internal sealed class DeleteArticleEndpoint : Endpoint<DeleteArticleRequest, Res
     {
         Delete("articles/{id}");
         AllowAnonymous();
+        Description(builder => builder.WithName("DeleteArticle"));
     }
 
     public override async Task<Results<NoContent, ProblemHttpResult>> ExecuteAsync(

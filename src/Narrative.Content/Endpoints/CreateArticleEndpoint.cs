@@ -1,4 +1,5 @@
 ﻿using FastEndpoints;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Narrative.Content.Commands;
@@ -18,6 +19,7 @@ internal sealed class CreateArticleEndpoint
     {
         Post("articles");
         AllowAnonymous();
+        Description(builder => builder.WithName("CreateArticle"));
     }
 
     public override async Task<Results<CreatedAtRoute<CreateArticleResponse>, ProblemHttpResult>> ExecuteAsync(

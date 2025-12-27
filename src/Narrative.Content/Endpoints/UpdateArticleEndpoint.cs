@@ -1,4 +1,5 @@
 ﻿using FastEndpoints;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Narrative.Content.Commands;
@@ -14,6 +15,7 @@ internal sealed class UpdateArticleEndpoint : Endpoint<UpdateArticleRequest, Res
     {
         Put("articles/{id}");
         AllowAnonymous();
+        Description(builder => builder.WithName("UpdateArticle"));
     }
 
     public override async Task<Results<NoContent, ProblemHttpResult>> ExecuteAsync(

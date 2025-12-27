@@ -1,4 +1,5 @@
 ﻿using FastEndpoints;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Narrative.Content.Commands;
@@ -15,6 +16,7 @@ internal sealed class ReviewArticleEndpoint : Endpoint<ReviewArticleRequest, Res
     {
         Patch("articles/{id}/review");
         AllowAnonymous();
+        Description(builder => builder.WithName("ReviewArticle"));
     }
 
     public override async Task<Results<NoContent, ProblemHttpResult>> ExecuteAsync(

@@ -6,9 +6,9 @@ public sealed record Error
 
     public string Description { get; }
 
-    public ErrorType Type { get; }
+    internal ErrorType Type { get; }
 
-    public static readonly Error None = new(string.Empty, string.Empty, ErrorType.Failure);
+    internal static readonly Error None = new(string.Empty, string.Empty, ErrorType.Failure);
 
     private Error(string code, string description, ErrorType type)
     {

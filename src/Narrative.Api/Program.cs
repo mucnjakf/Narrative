@@ -22,7 +22,15 @@ internal static class Program
 
         builder.Services
             .AddFastEndpoints()
-            .SwaggerDocument();
+            .SwaggerDocument(options =>
+            {
+                options.DocumentSettings = settings =>
+                {
+                    settings.Title = "Narrative API";
+                    settings.Version = "v1";
+                    settings.Description = "REST API for Narrative web application.";
+                };
+            });
 
         builder.Services.AddContentModule(builder.Configuration);
     }

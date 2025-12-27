@@ -1,6 +1,6 @@
 ﻿namespace Narrative.Shared;
 
-public enum ErrorType
+internal enum ErrorType
 {
     Failure,
     NotFound,
