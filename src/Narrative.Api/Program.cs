@@ -42,7 +42,28 @@ internal static class Program
         app.MapOpenApi();
 
         app
-            .UseFastEndpoints(config => config.Endpoints.RoutePrefix = "api")
+            .UseFastEndpoints(config =>
+            {
+                config.Endpoints.RoutePrefix = "api";
+                config.Errors.ResponseBuilder = (failures, _, _)
+                    => TypedResults.Problem(
+                        statusCode: StatusCodes.Status400BadRequest,
+                        title: "Validation failed",
+                        extensions: new Dictionary<string, object?>
+                        {
+                            {
+                                "errors",
+                                failures
+                                    .Select(failure
+                                        => new
+                                        {
+                                            code = failure.PropertyName,
+                                            description = failure.ErrorMessage
+                                        })
+                                    .ToArray()
+                            }
+                        }).ProblemDetails;
+            })
             .UseSwaggerGen();
     }
 }

@@ -21,7 +21,7 @@ Accept: application/json
 Content-Type: application/json
 
 {
-    "title": "test 123",
+    "title": "asd",
     "description": "descirption123",
     "content": "content 21322131"
 }
